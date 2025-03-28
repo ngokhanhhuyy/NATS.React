@@ -1,0 +1,19 @@
+.link {
+    color: unset;
+    text-decoration: none !important;
+    border: 1px solid transparent;
+    transform-origin: 50%;
+    transition: transform .25s ease;
+}
+
+.link:hover {
+    transform: scale(1.05);
+}
+
+.thumbnail {
+    width: 150px;
+    height: 150px;
+    aspect-ratio: 1;
+    box-shadow: var(--bs-box-shadow);
+    transition: .2s ease;
+}

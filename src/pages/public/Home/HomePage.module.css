@@ -1,0 +1,28 @@
+.sliderItemThumbnail {
+    max-height: 750px;
+    object-fit: cover;
+}
+
+.applicationNameContainer {
+    background-color: rgb(20, 112, 70);
+    font-size: 1.4em;
+}
+
+.summaryItemThumbnail {
+    width: 150px;
+    height: 150px;
+    aspect-ratio: 1;
+}
+
+.catalogItemThumbnail {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+@media (max-width: 576px) {
+    .applicationNameContainer {
+        font-size: 1.0em;
+    }
+}
