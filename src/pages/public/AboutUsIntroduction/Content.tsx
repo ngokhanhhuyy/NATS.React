@@ -1,4 +1,3 @@
-import { compute } from "@/utils/computeUtils";
 import styles from "./AboutUsIntroductionPage.module.css";
 
 type ContentProps = {
@@ -8,9 +7,9 @@ type ContentProps = {
 
 export default function Content(props: ContentProps) {
   // Computed.
-  const paragraphs = compute<string[]>(() => {
+  function splitToParagraphs(): string[] {
     return props.model.split(/\r?\n/);
-  });
+  }
 
   return (
     <div className="col col-lg-6 col-md-10 col-12">
@@ -19,7 +18,7 @@ export default function Content(props: ContentProps) {
       </h2>
 
       <div className={styles.paragraphContainer}>
-        {paragraphs.map((paragraph, index) => (
+        {splitToParagraphs().map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
       </div>

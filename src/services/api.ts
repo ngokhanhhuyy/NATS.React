@@ -1,15 +1,15 @@
+import type { ModelError } from '@/errors';
 import {
-	ValidationError,
-	OperationError,
-	InternalServerError,
-	AuthenticationError,
-	NotFoundError,
-	UndefinedError,
-	DuplicatedError,
-	AuthorizationError,
-	type IModelStateErrors
-} from "@/errors";
-import * as jsonUtils from "@/utils/jsonUtils";
+  AuthenticationError,
+  AuthorizationError,
+  DuplicatedError,
+  InternalServerError,
+  NotFoundError,
+  OperationError,
+  UndefinedError,
+  ValidationError
+} from '@/errors';
+import * as jsonUtils from '@/utils/jsonUtils';
 
 type Params = Record<string, any>;
 
@@ -23,11 +23,9 @@ type Params = Record<string, any>;
 export async function convertResponseErrorToException(response: Response): Promise<Error> {
 	const errorMessagesJson: string = await response.text();
 	switch (response.status) {
-			// Validation error
+    // Validation error
 		case 400: {
-			return new ValidationError(
-					jsonUtils.parseJson<IModelStateErrors>(errorMessagesJson)!
-			);
+      return new ValidationError(JSON.parse(errorMessagesJson) as ModelError);
 		}
 
     // Authentication error
@@ -35,33 +33,27 @@ export async function convertResponseErrorToException(response: Response): Promi
 			return new AuthenticationError();
 		}
 
-			// Forbidden error
+    // Forbidden error
 		case 403:
 			return new AuthorizationError();
 
-			// Not found error
+    // Not found error
 		case 404:
-			return new NotFoundError(
-					jsonUtils.parseJson<IModelStateErrors>(errorMessagesJson)!
-			);
+      return new NotFoundError(jsonUtils.parseJson<ModelError>(errorMessagesJson)!);
 
-			// Duplicated error
+    // Duplicated error
 		case 409:
-			return new DuplicatedError(
-					jsonUtils.parseJson<IModelStateErrors>(errorMessagesJson)!
-			);
+      return new DuplicatedError(JSON.parse(errorMessagesJson) as ModelError);
 
-			// Business logic error
+    // Business logic error
 		case 422:
-			return new OperationError(
-					jsonUtils.parseJson<IModelStateErrors>(errorMessagesJson)!
-			);
+      return new OperationError(jsonUtils.parseJson<ModelError>(errorMessagesJson)!);
 
-			// Internal server error
+    // Internal server error
 		case 500:
 			return new InternalServerError();
 
-			// Undefined error
+    // Undefined error
 		default:
 			return new UndefinedError();
 	}
@@ -84,11 +76,12 @@ export async function convertResponseErrorToException(response: Response): Promi
  * the response from the server.
  */
 export async function executeAsync(
-		method: string,
-		endpointPath: string,
-		requestDto?: object,
-		params?: Params,
-		delay: number = 300): Promise<Response> {
+  method: string,
+  endpointPath: string,
+  requestDto?: object,
+  params?: Params,
+  delay: number = 0
+): Promise<Response> {
 	// Determining the API's endpoint url.
 	const isServer = typeof window === "undefined";
 	let endpointUrl;
@@ -105,9 +98,8 @@ export async function executeAsync(
 	let requestInit: RequestInit = {
 		headers: { "Content-Type": "application/json" },
 		credentials: "include" as RequestCredentials,
-		method: method
+    method: method
 	};
-
 	if (requestDto) {
 		requestInit = { ...requestInit, body: JSON.stringify(requestDto) };
 	}
@@ -117,7 +109,7 @@ export async function executeAsync(
 	if (!isServer) {
 		[response] = await Promise.all([
 			sendRequest(),
-			new Promise(resolve => setTimeout(resolve, delay))
+      new Promise((resolve) => setTimeout(resolve, delay))
 		]);
 	} else {
 		response = await sendRequest();
@@ -148,9 +140,10 @@ export async function executeAsync(
  * @example getAsync<ResponseDtos.User.Detail>("user/1");
  */
 export async function getAsync<TResponseDto>(
-		endpointPath: string,
-		params?: Params,
-		delay?: number): Promise<TResponseDto> {
+  endpointPath: string,
+  params?: Params,
+  delay?: number
+): Promise<TResponseDto> {
 	const response = await executeAsync("get", endpointPath, undefined, params, delay);
 	const responseAsText = await response.text();
 	return jsonUtils.parseJson<TResponseDto>(responseAsText)!;
@@ -173,10 +166,11 @@ export async function getAsync<TResponseDto>(
  * @example postAsync<int>("user");
  */
 export async function postAsync<TResponseDto>(
-		endpointPath: string,
-		requestDto: object,
-		params?: Params,
-		delay?: number): Promise<TResponseDto> {
+  endpointPath: string,
+  requestDto: object,
+  params?: Params,
+  delay?: number
+): Promise<TResponseDto> {
 	const response = await executeAsync("post", endpointPath, requestDto, params, delay);
 	const responseAsText = await response.text();
 	return jsonUtils.parseJson<TResponseDto>(responseAsText)!;
@@ -199,16 +193,17 @@ export async function postAsync<TResponseDto>(
  * @example postAndIgnoreAsync("user/changePasswordAsync/1");
  */
 export async function postAndIgnoreAsync(
-		endpointPath: string,
-		requestDto: object,
-		params?: Params,
-		delay?: number): Promise<void> {
+  endpointPath: string,
+  requestDto: object,
+  params?: Params,
+  delay?: number
+): Promise<void> {
 	await executeAsync("post", endpointPath, requestDto, params, delay);
 }
 
 /**
- * Sends a PUT request to the specified `endpointPath` with the optionally specified
- * `params` and the `requestDto` object as the body, then parses the response body into a
+ * Sends a PUT request to the specified `endpointPath` with the optionally specified `params`
+ * and the `requestDto` object as the body, then parses the response body into a
  * TypeScript/JavaScript object as the type specified in the type parameter.
  *
  * @template TResponseDto The type of the object which is parsed from the response
@@ -225,10 +220,11 @@ export async function postAndIgnoreAsync(
  * @example putAsync<boolean>("user/1", requestDto);
  */
 export async function putAsync<TResponseDto>(
-		endpointPath: string,
-		requestDto: object,
-		params?: Params,
-		delay?: number): Promise<TResponseDto> {
+  endpointPath: string,
+  requestDto: object,
+  params?: Params,
+  delay?: number
+): Promise<TResponseDto> {
 	const response = await executeAsync("put", endpointPath, requestDto, params, delay);
 	const responseAsText = await response.text();
 	return jsonUtils.parseJson<TResponseDto>(responseAsText)!;
@@ -251,10 +247,11 @@ export async function putAsync<TResponseDto>(
  * @example putAndIgnoreAsync("user/1", requestDto);
  */
 export async function putAndIgnoreAsync(
-		endpointPath: string,
-		requestDto: object,
-		params?: Record<string, any>,
-		delay?: number): Promise<void> {
+  endpointPath: string,
+  requestDto: object,
+  params?: Record<string, any>,
+  delay?: number
+): Promise<void> {
 	await executeAsync("put", endpointPath, requestDto, params, delay);
 }
 
@@ -276,9 +273,10 @@ export async function putAndIgnoreAsync(
  * @example deleteAsync<boolean>("user/1");
  */
 export async function deleteAsync<TResponseDto>(
-		endpointPath: string,
-		params?: Params,
-		delay?: number): Promise<TResponseDto> {
+  endpointPath: string,
+  params?: Params,
+  delay?: number
+): Promise<TResponseDto> {
 	const response = await executeAsync("delete", endpointPath, undefined, params, delay);
 	const responseAsText = await response.text();
 	return jsonUtils.parseJson<TResponseDto>(responseAsText)!;
@@ -299,9 +297,10 @@ export async function deleteAsync<TResponseDto>(
  * @example deleteAndIgnoreAysnc("user/1");
  */
 export async function deleteAndIgnoreAsync(
-		endpointPath: string,
-		params?: Params,
-		delay?: number): Promise<void> {
+  endpointPath: string,
+  params?: Params,
+  delay?: number
+): Promise<void> {
 	await executeAsync("delete", endpointPath, undefined, params, delay);
 }
 
@@ -314,19 +313,21 @@ export async function deleteAndIgnoreAsync(
  * @returns The converted `string` as query string.
  */
 export function getQueryString<TParams extends Record<string, any>>(
-		params: TParams,
-		prefix: string = ""): string {
+  params: TParams,
+  prefix: string = ''
+): string {
 	return Object.keys(params)
-			.map((key) => {
-				const value = params[key];
-				const prefixedKey = prefix ? `${prefix}.${key}` : key;
+    .map((key) => {
+      const value = params[key];
+      const prefixedKey = prefix ? `${prefix}.${key}` : key;
 
-				if (typeof value === "object" && value !== null) {
-					return getQueryString(value, prefixedKey);
-				} else if (value !== undefined) {
-					return `${encodeURIComponent(prefixedKey)}=${encodeURIComponent(value)}`;
-				}
-				return "";
-			}).filter((part) => !!part)
-			.join("&");
+      if (typeof value === 'object' && value !== null) {
+        return getQueryString(value, prefixedKey);
+      } else if (value !== undefined) {
+        return `${encodeURIComponent(prefixedKey)}=${encodeURIComponent(value)}`;
+      }
+      return '';
+    })
+    .filter((part) => !!part)
+    .join('&');
 }

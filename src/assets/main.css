@@ -137,7 +137,6 @@ select:is(.is-valid)::placeholder {
 .fade-animation-reverse {
   animation-direction: reverse;
 }
-
 @keyframes fade {
   from {
     opacity: 100%;

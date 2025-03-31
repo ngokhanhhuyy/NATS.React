@@ -17,12 +17,11 @@ export default function MainContainer(props: MainContainerProps) {
 
     // Computed.
     const className = compute<string>(() => {
-        let containerClassName: string = "container";
+        let name: string = "container";
         if (props.fluid == null || props.fluid) {
-            containerClassName = "container-fluid";
+          name = "container-fluid";
         }
-        
-        let name = `${containerClassName} fade-animation fade-animation-reverse`;
+
         if (props.className) {
             name += ` ${props.className}`;
         }

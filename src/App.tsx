@@ -8,9 +8,9 @@ import "@/assets/main.css";
 
 // Layout component.
 import RootLayout from "@/components/layouts/RootLayout";
-import PublicLayout from "@/components/layouts/public/PublicLayout";
+import PublicLayout from "./components/layouts/public/PublicLayout";
 import PublicSubPageLayout from "@/components/layouts/public/PublicSubPageLayout";
-import ProtectedLayout from "@/components/layouts/protected/ProtectedLayout";
+import ProtectedLayout from "./components/layouts/protected/ProtectedLayout";
 
 // Page components.
 const HomePage = lazy(() => import("@/pages/public/Home/HomePage"));

@@ -76,9 +76,7 @@ export default function AboutUsPage() {
 				<MemberList model={model.members} />
 			</div>
 
-      <div className="row gx-5 justify-content-center mt-4">
-			  <CertificateList model={model.certificates} />
-      </div>
+			<CertificateList model={model.certificates} />
 		</div>
 	);
 }
