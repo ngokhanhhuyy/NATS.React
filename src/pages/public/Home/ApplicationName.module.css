@@ -1,0 +1,10 @@
+.container {
+    background-color: rgb(20, 112, 70);
+    font-size: 1.4em;
+}
+
+@media (max-width: 576px) {
+    .container {
+        font-size: 1.0em;
+    }
+}

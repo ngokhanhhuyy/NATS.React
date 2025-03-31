@@ -8,12 +8,16 @@ import "@/assets/main.css";
 
 // Layout component.
 import RootLayout from "@/components/layouts/RootLayout";
-import PublicLayout from "./components/layouts/public/PublicLayout";
-import ProtectedLayout from "./components/layouts/protected/ProtectedLayout";
+import PublicLayout from "@/components/layouts/public/PublicLayout";
+import PublicSubPageLayout from "@/components/layouts/public/PublicSubPageLayout";
+import ProtectedLayout from "@/components/layouts/protected/ProtectedLayout";
 
 // Page components.
 const HomePage = lazy(() => import("@/pages/public/Home/HomePage"));
 const SummaryItemPage = lazy(() => import("@/pages/public/SummaryItem/SummaryItemPage"));
+const AboutUsIntroductionPage = lazy(() => {
+  return import("@/pages/public/AboutUsIntroduction/AboutUsIntroductionPage");
+});
 
 const App = () => {
   return (
@@ -22,8 +26,10 @@ const App = () => {
         <Route element={<RootLayout />}>
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="ve-chung-toi" element={<>About us</>} />
-            <Route path="gioi-thieu" element={<SummaryItemPage />} />
+            <Route element={<PublicSubPageLayout/>}>
+              <Route path="ve-chung-toi" element={<AboutUsIntroductionPage/>} />
+              <Route path="gioi-thieu" element={<SummaryItemPage/>} />
+            </Route>
           </Route>
 
           <Route path="/admin" element={<ProtectedLayout />}>

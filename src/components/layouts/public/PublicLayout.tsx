@@ -6,11 +6,9 @@ export default function FrontPagesLayout() {
   return (
     <>
       <NavigationBar />
-
       <main className="flex-shrink-0">
         <Outlet />
       </main>
-
       <Footer />
     </>
   );

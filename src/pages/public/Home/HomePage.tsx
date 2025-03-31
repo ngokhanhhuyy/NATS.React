@@ -12,10 +12,13 @@ import { createAboutUsIntroductionDetailModel } from "@/models/aboutUsIntroducti
 import { createCatalogItemBasicModel } from "@/models/catalogItemModels";
 import { createContactDetailModel } from "@/models/contactModels";
 import { createGeneralSettingsDetailModel } from "@/models/generalSettingsModels";
-import styles from "./HomePage.module.css";
+
+// Layout component.
+import MainContainer from "@/components/layouts/public/MainContainer";
 
 // Child components.
 import SliderItemList from "./SliderItemList";
+import ApplicationName from "./ApplicationName";
 import SummaryItemList from "./SummaryItemList";
 import AboutUsIntroduction from "./AboutUsIntroduction";
 import CatalogItemList from "./CatalogItemList";
@@ -74,32 +77,14 @@ export default function HomePage() {
   const model = useAsyncModelInitializer("homePage", initializeModelAsync);
 
   return (
-    <div className="container-fluid p-0">
+    <MainContainer title="Trang chủ" className="p-0">
       <SliderItemList model={model.sliderItems} />
-
-      {/* ApplicationName */}
-      <div
-        className={[
-          "container-fluid text-center text-white fw-bold p-2 mb-3 shadow",
-          styles.applicationNameContainer
-        ].join(" ")}
-      >
-        {model.generalSettings.applicationName}
-      </div>
-
-      {/* SummaryItems */}
+      <ApplicationName model={model.generalSettings} />
       <SummaryItemList model={model.summaryItems} />
-
-      {/* AboutUsIntroduction */}
       <AboutUsIntroduction model={model.aboutUsIntroduction} />
-
-      {/* CatalogItems */}
       <CatalogItemList title="Dịch vụ" model={model.services} />
       <CatalogItemList title="Khoá học" model={model.courses} />
-      {/* <CatalogItemList title="Sản phẩm" model={model.products} /> */}
-
-      {/* Enquiry */}
       {/* <EnquiryForm /> */}
-    </div>
+    </MainContainer>
   );
 }
