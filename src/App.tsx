@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import "bootstrap";
 import "@popperjs/core";
 import "bootstrap/dist/css/bootstrap.css";
@@ -18,6 +18,7 @@ const SummaryItemPage = lazy(() => import("@/pages/public/SummaryItem/SummaryIte
 const AboutUsIntroductionPage = lazy(() => {
   return import("@/pages/public/AboutUsIntroduction/AboutUsIntroductionPage");
 });
+const SignInPage = lazy(() => import("@/pages/SignInPage"));
 
 const App = () => {
   return (
@@ -30,13 +31,17 @@ const App = () => {
               <Route path="ve-chung-toi" element={<AboutUsIntroductionPage/>} />
               <Route path="gioi-thieu" element={<SummaryItemPage/>} />
             </Route>
+
+            <Route path="/admin" element={<ProtectedLayout />}>
+              <Route index element={<>Dashboard</>} />
+              <Route path="ve-chung-toi" element={<>About us</>} />
+              <Route path="gioi-thieu" element={<>Summary items</>} />
+            </Route>
           </Route>
 
-          <Route path="/admin" element={<ProtectedLayout />}>
-            <Route index element={<>Dashboard</>} />
-            <Route path="ve-chung-toi" element={<>About us</>} />
-            <Route path="gioi-thieu" element={<>Summary items</>} />
-          </Route>
+          <Route path="/dang-nhap" element={<SignInPage/>} />
+          <Route path="/quan-tri" element={<>Dashboard</>}/>
+          <Route path="*" element={<Navigate to="/"/>}/>
         </Route>
       </Routes>
     </Router>

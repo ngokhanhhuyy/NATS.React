@@ -6,7 +6,8 @@ export default function FrontPagesLayout() {
   return (
     <>
       <NavigationBar />
-      <main className="flex-shrink-0 fade-animation fade-animation-reverse">
+      <main className="d-flex flex-column flex-fill flex-shrink-0
+                      fade-animation fade-animation-reverse">
         <Outlet />
       </main>
       <Footer />
