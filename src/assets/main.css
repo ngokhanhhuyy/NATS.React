@@ -146,7 +146,6 @@ select:is(.is-valid)::placeholder {
 @keyframes fade {
     from {
         opacity: 100%;
-        opacity: 100%;
     }
 
     to {
