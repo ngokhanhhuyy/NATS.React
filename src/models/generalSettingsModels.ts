@@ -5,7 +5,6 @@ declare global {
 		underMaintainance: boolean,
 	};
 }
-;
 
 function createDetail(responseDto: GeneralSettingsResponseDto): GeneralSettingsDetailModel {
 	return {

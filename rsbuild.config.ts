@@ -46,7 +46,7 @@ export default defineConfig({
   },
   dev: {
     client: {
-      host: "frontend-workstation.khanhhuy.dev",
+      // host: "frontend-workstation.khanhhuy.dev",
     },
   },
 });

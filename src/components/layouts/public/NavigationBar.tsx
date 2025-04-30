@@ -113,7 +113,7 @@ function NavigationItem(props: { path: string, children: ReactNode | ReactNode[]
 
   return (
     <li className="nav-item">
-      <Link to={props.path} className={`nav-link ${itemClassName}`}>
+      <Link to={props.path} className={`nav-link ${itemClassName}`} viewTransition>
         {props.children}
       </Link>
     </li>

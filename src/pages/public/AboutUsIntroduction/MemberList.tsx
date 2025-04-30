@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { compute } from "@/utils/computeUtils";
 import styles from "./AboutUsIntroductionPage.module.css";
 
 type MemberListProps = {
@@ -8,16 +7,6 @@ type MemberListProps = {
 
 export default function MemberList(props: MemberListProps) {
   // Computed.
-  const itemContainerClassName = compute<string>(() => {
-    return "col col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12 " +
-          "d-flex flex-column align-items-center justify-content-start";
-  });
-
-  const fullNameClassName = compute<string>(() => {
-    return "fs-4 fw-bold bg-success-subtle border border-success-subtle " +
-            "rounded text-success px-2 text-success";
-  });
-
   function splitToParagraphs(detailContent: string): string[] {
     return detailContent.split(/\r?\n/);
   }
@@ -29,9 +18,14 @@ export default function MemberList(props: MemberListProps) {
           Đội ngũ của chúng tôi
         </h2>
       </div>
-      
       {props.model.map(member => (
-        <div className={itemContainerClassName} key={member.id}>
+        <div
+          className={[
+            "col col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12",
+            "d-flex flex-column align-items-center justify-content-start"
+          ].join(" ")}
+          key={member.id}
+        >
           <img
             src={member.thumbnailUrl}
             className={`mb-3 shadow ${styles.memberThumbnail}`}
@@ -39,10 +33,14 @@ export default function MemberList(props: MemberListProps) {
           />
 
           {/* FullName */}
-          <span className={fullNameClassName}>
+          <span
+            className={[
+              "fs-4 fw-bold bg-success-subtle border border-success-subtle",
+              "rounded text-success px-2 text-success"
+            ].join(" ")}
+          >
             {member.fullName}
           </span>
-
           {/* RoleName */}
           <span className="my-2 text-success">{member.roleName}</span>
 
