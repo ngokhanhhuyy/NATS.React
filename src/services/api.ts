@@ -7,7 +7,6 @@ import {
 	UndefinedError,
 	DuplicatedError,
 	AuthorizationError,
-	type IModelStateErrors
 } from "@/errors";
 import * as jsonUtils from "@/utils/jsonUtils";
 
@@ -88,7 +87,7 @@ export async function executeAsync(
 		endpointPath: string,
 		requestDto?: object,
 		params?: Params,
-		delay: number = 300): Promise<Response> {
+		delay: number = 0): Promise<Response> {
 	// Determining the API's endpoint url.
 	const isServer = typeof window === "undefined";
 	let endpointUrl;

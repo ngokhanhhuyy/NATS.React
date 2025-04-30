@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import "bootstrap";
 import "@popperjs/core";
 import "bootstrap/dist/css/bootstrap.css";
@@ -19,27 +19,57 @@ const AboutUsIntroductionPage = lazy(() => {
   return import("@/pages/public/AboutUsIntroduction/AboutUsIntroductionPage");
 });
 
+const Dashboard = lazy(() => import("@/pages/protected/Dashboard"));
+const SliderItem = lazy(() => import("@/pages/protected/SliderItemPage"));
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        Component: PublicLayout,
+        children: [
+          {
+            index: true,
+            element: <HomePage />
+          },
+          {
+            element: <PublicSubPageLayout />,
+            children: [
+              {
+                path: "ve-chung-toi",
+                element: <AboutUsIntroductionPage />
+              },
+              {
+                path: "gioi-thieu",
+                element: <SummaryItemPage />
+              }
+            ]
+          },
+        ]
+      },
+      {
+        path: "/admin",
+        element: <ProtectedLayout />,
+        children: [
+          {
+            index: true,
+            element: <Dashboard />
+          },
+          {
+            path: "trinh-chieu-anh",
+            element: <SliderItem />
+          }
+        ]
+      }
+    ]
+  }
+]);
+
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route element={<RootLayout />}>
-          <Route path="/" element={<PublicLayout />}>
-            <Route index element={<HomePage />} />
-            <Route element={<PublicSubPageLayout/>}>
-              <Route path="ve-chung-toi" element={<AboutUsIntroductionPage/>} />
-              <Route path="gioi-thieu" element={<SummaryItemPage/>} />
-            </Route>
-          </Route>
-
-          <Route path="/admin" element={<ProtectedLayout />}>
-            <Route index element={<>Dashboard</>} />
-            <Route path="ve-chung-toi" element={<>About us</>} />
-            <Route path="gioi-thieu" element={<>Summary items</>} />
-          </Route>
-        </Route>
-      </Routes>
-    </Router>
+    <RouterProvider router={router} />
   );
 };
 

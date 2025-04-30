@@ -3,36 +3,33 @@ import { compute } from "@/utils/computeUtils";
 
 // Props.
 type MainContainerProps = {
-    title: string;
-    children: ReactNode | ReactNode[];
-    fluid?: boolean;
+  title: string;
+  children: ReactNode | ReactNode[];
+  fluid?: boolean;
 } & ComponentPropsWithoutRef<"div">;
 
 // Component.
 export default function MainContainer(props: MainContainerProps) {
-    // Effect.
-    useEffect(() => {
-        document.title = props.title;
-    }, []);
+  // Effect.
+  useEffect(() => {
+    document.title = props.title;
+  }, []);
 
-    // Computed.
-    const className = compute<string>(() => {
-        let containerClassName: string = "container";
-        if (props.fluid == null || props.fluid) {
-            containerClassName = "container-fluid";
-        }
-        
-        let name = `${containerClassName} fade-animation fade-animation-reverse`;
-        if (props.className) {
-            name += ` ${props.className}`;
-        }
+  // Computed.
+  const className = compute<string>(() => {
+    let containerClassName: string = 
+    "container";
+    if (props.fluid == null || props.fluid) {
+      containerClassName = "container-fluid";
+    }
 
-        return name;
-    });
+    // let name = `${containerClassName} fade-animation fade-animation-reverse`;
+    // if (props.className) {
+    //   name += ` ${props.className}`;
+    // }
 
-    return (
-        <div className={className}>
-            {props.children}
-        </div>
-    );
+    return name;
+  });
+
+  return <div className={className}>{props.children}</div>;
 }
